@@ -1,8 +1,12 @@
+from shop.models import Product
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from shop.models import Product
+
+
+product = Product
 
 
 @require_POST
@@ -32,4 +36,4 @@ def cart_detail(request):
             initial={'quantity': item['quantity'],
                      'update': True}
         )
-    return render(request, 'cart/detail.html', {'cart': cart, 'item': item})
+    return render(request, 'cart/detail.html', {'cart': cart})
