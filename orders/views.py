@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render, redirect, get_object_or_404
 from cart.cart import Cart
 from orders.forms import OrderCreateForm
-from orders.models import OrderItem
+from orders.models import OrderItem, Order
 from .tasks import order_created
+from django.urls import reverse
 
 
 def order_create(request):
@@ -20,11 +22,20 @@ def order_create(request):
                 cart.clear()
                 # Запуск асинхронной задачи
                 order_created.delay(order.id)
-                return render(request,
-                              'orders/order/created.html',
-                              {'order': order})
+                # Сохранение заказа в сессии
+                request.session['order_id'] = order.id
+                # Перенаправление на страницу оплаты
+                return redirect(reverse('payment:payment_process'))
     else:
         form = OrderCreateForm()
     return render(request,
                   'orders/order/create.html',
                   {'cart': cart, 'form': form})
+
+
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request,
+                  'admin/orders/order/detail.html',
+                  {'order': order})

@@ -1,4 +1,5 @@
 import os
+from braintree import Configuration, Environment
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -7,7 +8,6 @@ SECRET_KEY = 'obkb)8a^r#%u%g0+e_*c$gdzl0kl25yx=0^w*-pb)6*w&1iky*'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -32,6 +33,19 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myshop.urls'
+
+BRAINTREE_MERCHANT_ID = '7f2bkdtpqh3tg9pq'
+
+BRAINTREE_PUBLIC_KEY = '8mw6tqdw9nvys2x2'
+
+BRAINTREE_PRIVATE_KEY = 'b2f70b4bdfd5874bce43879374362e8b'
+
+Configuration.configure(
+    Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY,
+)
 
 CART_SESSION_ID = 'cart'
 
