@@ -40,6 +40,8 @@ BRAINTREE_PUBLIC_KEY = '8mw6tqdw9nvys2x2'
 
 BRAINTREE_PRIVATE_KEY = 'b2f70b4bdfd5874bce43879374362e8b'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 Configuration.configure(
     Environment.Sandbox,
     BRAINTREE_MERCHANT_ID,
